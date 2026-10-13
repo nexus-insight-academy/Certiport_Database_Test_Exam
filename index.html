@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teste de probă · Пробные экзамены · Certiport IT Specialist: Databases</title>
+<style>
+:root{--navy:#22235C;--blue:#1927A1;--teal:#1BA4B0;--red:#E4003D;--gold:#FABC1D;
+      --green:#2E9E5B;--ink:#2a2d52;--soft:#F3F5FE;--line:#D8DCF0;--grey:#6B7280}
+*{box-sizing:border-box}
+body{margin:0;background:#EEF1F8;color:var(--ink);
+     font:15px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}
+header{background:var(--navy);color:#fff;padding:14px 26px;display:flex;
+       justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+header b{font-size:19px;letter-spacing:.09em}
+header span{font-size:14px;opacity:.85}
+.wrap{max-width:1180px;margin:22px auto;padding:0 18px}
+.bar{background:#fff;border:1px solid var(--line);border-radius:10px 10px 0 0;
+     padding:11px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.bar .count{font-weight:700;font-size:16px}
+.bar .obj{color:var(--grey);font-size:13px}
+.spacer{flex:1}
+.pbar{height:6px;background:#fff;border:1px solid var(--line);border-top:0;
+      border-radius:0 0 10px 10px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--green);width:0;transition:width .2s}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);
+       background:#fff;padding:9px 16px;color:var(--ink)}
+button:hover:not(:disabled){border-color:var(--blue)}
+button:disabled{opacity:.4;cursor:default}
+button.p{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:17px;
+       padding:5px 12px;border-radius:8px;background:var(--soft)}
+.timer.low{background:#FDEEF2;color:var(--red)}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;
+      margin-top:14px;padding:30px 34px 34px}
+.qtext{font-size:18px;font-weight:600;margin:0 0 6px}
+.qhint{color:var(--grey);font-size:13px;margin:0 0 22px}
+hr{border:0;border-top:1px solid var(--line);margin:0 0 24px}
+.opts{display:flex;flex-direction:column;align-items:center;gap:11px}
+.opt{width:min(440px,100%);text-align:center;padding:13px 16px;background:#F7F8FC;
+     border:1px solid var(--line);font-weight:600}
+.opt.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+.nav{display:none;margin-top:14px;background:#fff;border:1px solid var(--line);
+     border-radius:10px;padding:16px}
+.nav.on{display:block}
+.grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.g{width:42px;height:38px;border-radius:7px;border:1px solid var(--line);background:#fff;
+   font-weight:700;font-size:14px}
+.g.done{background:var(--soft);border-color:var(--blue);color:var(--blue)}
+.g.mark{background:#FEF7E4;border-color:var(--gold)}
+.g.cur{outline:2px solid var(--navy)}
+.legend{color:var(--grey);font-size:13px;margin-top:12px}
+.res h2{margin:0 0 4px;font-size:26px}
+.score{font-size:52px;font-weight:800;line-height:1.1}
+.pass{color:var(--green)}.fail{color:var(--red)}
+table{border-collapse:collapse;width:100%;margin-top:18px;font-size:14px}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+th{background:var(--soft);color:var(--blue)}
+.pick{width:100%;text-align:left;display:flex;justify-content:space-between;
+      align-items:center;gap:14px;padding:15px 18px;margin-bottom:10px;flex-wrap:wrap}
+.pick b{font-size:16px}
+.pick .meta{color:var(--grey);font-size:13.5px;white-space:nowrap}
+.rev{margin-top:12px;border-top:1px solid var(--line);padding-top:16px}
+.rev .q{font-weight:600;margin-bottom:6px}
+.rev .a{font-size:14px;margin:3px 0}
+.rev .e{font-size:13.5px;color:var(--grey);margin-top:5px}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:20px;
+     background:var(--soft);color:var(--blue);margin-right:7px;font-weight:700}
+.note{background:var(--soft);border-left:4px solid var(--teal);padding:13px 16px;
+      border-radius:0 8px 8px 0;margin-top:16px;font-size:14px}
+.lang button{border:1px solid rgba(255,255,255,.45);background:transparent;color:#fff;
+  padding:6px 13px;border-radius:8px;font-weight:600;font-size:13.5px}
+.lang button.on{background:#fff;color:var(--navy);border-color:#fff}
+.lang button:hover:not(.on){border-color:#fff}
+.big{width:min(340px,100%);padding:18px;font-size:17px}
+.who{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 18px}
+.who label{font-size:13.5px;font-weight:700;color:var(--blue)}
+.who input{font:inherit;padding:9px 13px;border:1px solid var(--line);border-radius:8px;
+  min-width:260px;flex:1;color:var(--ink)}
+.who input:focus{outline:2px solid var(--blue);border-color:var(--blue)}
+.who .warn{color:var(--red);font-size:13px;width:100%}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+</style></head><body>
+<header><b>NEXUS ACADEMY</b><span id="sub"></span>
+  <span class="spacer"></span>
+  <span class="lang" id="lang">
+    <button id="lru">Русский</button><button id="lro">Română</button>
+  </span></header>
+<div class="wrap">
+  <div class="bar" id="bar">
+    <button id="prev">← Назад</button>
+    <button id="reset">↻ Сбросить ответ</button>
+    <span class="count" id="count"></span>
+    <span class="obj" id="obj"></span>
+    <button id="toggle">☰ Все вопросы</button>
+    <span class="spacer"></span>
+    <span class="timer" id="timer"></span>
+    <label style="display:flex;gap:6px;align-items:center;font-size:14px">
+      <input type="checkbox" id="mark"><span id="marklabel"></span></label>
+    <button id="skip">Пропустить ⏭</button>
+    <button class="p" id="next">Далее →</button>
+  </div>
+  <div class="pbar" id="pbar"><i id="pfill"></i></div>
+  <div class="nav" id="nav"><b id="navtitle"></b><div class="grid" id="grid"></div>
+    <div class="legend" id="navlegend"></div></div>
+  <noscript><div class="card">
+    <p class="qtext">Тест не запустился. · Testul nu a pornit.</p>
+    <p>Эта страница работает только в браузере. Сохраните файл на диск и откройте
+    <b>двойным щелчком</b>, либо перетащите в окно Chrome, Safari или Edge.</p>
+    <p>Această pagină funcționează doar în browser. Salvați fișierul pe disc și deschideți-l cu
+    <b>dublu clic</b>, ori trageți-l în fereastra Chrome, Safari sau Edge.</p></div></noscript>
+  <div class="card" id="card"></div>
+</div>
+<script>
+const BANK = [{"d": 1, "obj": "1.1", "q": "In a table, what is another name for a row?", "a": ["Record", "Field", "Entity", "Attribute"], "e_ru": "Строка — это запись, столбец — поле, а сама таблица — сущность. Экзамен пользуется обоими словами из каждой пары.", "e_ro": "Rândul este o înregistrare, coloana un câmp, iar tabelul însuși o entitate. Examenul folosește ambele cuvinte din fiecare pereche."}, {"d": 1, "obj": "1.1", "q": "Which term describes a property that defines data in an entity?", "a": ["Column", "Row", "Key", "Index"], "e_ru": "Столбец, он же поле, хранит одно свойство сущности.", "e_ro": "Coloana, adică câmpul, păstrează o singură proprietate a entității."}, {"d": 1, "obj": "1.1", "q": "A table is being designed to store one row per school trip. What is the table called in exam wording?", "a": ["An entity", "A record", "A field", "A schema"], "e_ru": "На экзамене таблицу называют entity, строку — record, столбец — field.", "e_ro": "La examen tabelul se numește entity, rândul — record, coloana — field."}, {"d": 1, "obj": "1.1", "q": "Which of these belongs in its own table rather than as a column?", "a": ["A list of subjects each student takes", "A student's date of birth", "A student's surname", "A student's tuition"], "e_ru": "Повторяющаяся группа переезжает в отдельную таблицу. Одиночные значения остаются столбцами.", "e_ro": "Un grup care se repetă se mută într-un tabel separat. Valorile singulare rămân coloane."}, {"d": 1, "obj": "1.1", "q": "How many values should one field hold?", "a": ["One", "Two", "As many as needed", "One per row"], "e_ru": "Одно значение в одном поле. Это первая нормальная форма.", "e_ro": "O valoare într-un câmp. Aceasta este prima formă normală."}, {"d": 1, "obj": "1.2", "q": "A school stores students. Which column makes the best primary key?", "a": ["A generated student number", "Last name", "Date of birth", "Email address"], "e_ru": "Выданный номер уникален и не меняется. Фамилии и даты повторяются, адрес почты можно сменить.", "e_ro": "Numărul atribuit este unic și nu se schimbă. Numele și datele se repetă, adresa de e-mail poate fi schimbată."}, {"d": 1, "obj": "1.2", "q": "A primary key built from two columns is called what?", "a": ["Composite key", "Foreign key", "Alternate key", "Candidate key"], "e_ru": "Composite key, второе имя — compound key. Экзамен использует оба слова.", "e_ro": "Composite key, al doilea nume — compound key. Examenul folosește ambele cuvinte."}, {"d": 1, "obj": "1.2", "q": "A candidate key that was not chosen as the primary key is called what?", "a": ["An alternate key", "A foreign key", "A composite key", "A surrogate key"], "e_ru": "Alternate key — ключ, который мог быть первичным, но им не стал.", "e_ro": "Alternate key — cheia care putea fi primară, dar nu a devenit."}, {"d": 1, "obj": "1.2", "q": "Which two things are always true of a primary key?", "a": ["Unique and never empty", "Unique and numeric", "Numeric and indexed", "Short and unique"], "e_ru": "Первичный ключ уникален и не бывает пустым. Числом быть не обязан.", "e_ro": "Cheia primară este unică și nu este niciodată goală. Nu trebuie să fie neapărat un număr."}, {"d": 1, "obj": "1.2", "q": "A key generated by the database purely to identify a row is called what?", "a": ["A surrogate key", "A natural key", "A foreign key", "An alternate key"], "e_ru": "Surrogate key ничего не значит сам по себе, natural key взят из самих данных.", "e_ro": "Surrogate key nu înseamnă nimic prin sine, natural key este luată din datele însele."}, {"d": 1, "obj": "1.2", "q": "In a junction table between students and subjects, what is the primary key?", "a": ["The pair of both foreign keys", "The student column only", "The subject column only", "A new numeric column is required"], "e_ru": "Пара столбцов. По отдельности ни один из них не уникален.", "e_ro": "Perechea de coloane. Separat, niciuna dintre ele nu este unică."}, {"d": 1, "obj": "1.3", "q": "Which data type stores a value that is only true or false?", "a": ["bit", "char", "smallint", "float"], "e_ru": "bit хранит 1 или 0. Отдельного типа boolean в SQL Server нет.", "e_ro": "bit păstrează 1 sau 0. Tip boolean separat nu există în SQL Server."}, {"d": 1, "obj": "1.3", "q": "A column stores a price. Which data type is correct?", "a": ["decimal", "float", "real", "varchar"], "e_ru": "decimal считает точно. float и real приблизительны и теряют копейки при сложении.", "e_ro": "decimal socotește exact. float și real sunt aproximative și pierd bănuții la adunare."}, {"d": 1, "obj": "1.3", "q": "Which type stores text of varying length without padding it?", "a": ["varchar", "char", "text only", "nchar"], "e_ru": "varchar хранит ровно то, что положили. char добивает пробелами до полной ширины.", "e_ro": "varchar păstrează exact ce ați pus. char completează cu spații până la lățimea întreagă."}, {"d": 1, "obj": "1.3", "q": "A column must hold text in several alphabets. Which type?", "a": ["nvarchar", "varchar", "char", "binary"], "e_ru": "Буква n означает Unicode. Без неё буквы вне кодовой страницы теряются.", "e_ro": "Litera n înseamnă Unicode. Fără ea, literele din afara paginii de cod se pierd."}, {"d": 1, "obj": "1.3", "q": "A birth date is stored as text. What breaks first?", "a": ["Sorting by age", "Storage size", "The primary key", "The foreign key"], "e_ru": "Текст сортируется как текст: «10.01.2009» окажется раньше «02.02.2008».", "e_ro": "Textul se sortează ca text: „10.01.2009” ajunge înaintea lui „02.02.2008”."}, {"d": 1, "obj": "1.3", "q": "Which type is the smallest that can hold a school grade from 1 to 12?", "a": ["tinyint", "int", "bigint", "decimal"], "e_ru": "tinyint хранит от 0 до 255 в одном байте. Выбирать самый маленький подходящий тип — и есть смысл вопроса.", "e_ro": "tinyint păstrează de la 0 la 255 într-un octet. A alege cel mai mic tip potrivit — acesta este sensul întrebării."}, {"d": 1, "obj": "1.4", "q": "Which relationship type cannot be built without a third table?", "a": ["Many-to-many", "One-to-one", "One-to-many", "Self-referencing"], "e_ru": "Связь многие ко многим всегда разделяется связующей таблицей.", "e_ro": "Relația multe la multe se desparte întotdeauna printr-un tabel de legătură."}, {"d": 1, "obj": "1.4", "q": "In a one-to-many relationship, where does the foreign key live?", "a": ["In the table on the many side", "In the table on the one side", "In both tables", "In a separate table"], "e_ru": "Внешний ключ лежит в дочерней таблице и указывает на родителя.", "e_ro": "Cheia externă stă în tabelul copil și arată spre părinte."}, {"d": 1, "obj": "1.4", "q": "What makes a foreign key relationship one-to-one rather than one-to-many?", "a": ["A unique constraint on the foreign key column", "The word ONE in the constraint", "A composite primary key", "An index on the parent table"], "e_ru": "Уникальность. Без неё на одного родителя можно сослаться много раз.", "e_ro": "Unicitatea. Fără ea, același părinte poate fi referit de multe ori."}, {"d": 1, "obj": "1.4", "q": "Records in a foreign key table that have no match in the parent are called what?", "a": ["Orphaned records", "Null records", "Broken records", "Duplicate records"], "e_ru": "Осиротевшие записи. Их и не допускает ссылочная целостность.", "e_ro": "Înregistrări orfane. Tocmai ele sunt oprite de integritatea referențială."}, {"d": 1, "obj": "1.4", "q": "Referential integrity prevents what?", "a": ["A foreign key pointing at a row that does not exist", "Two rows having the same primary key", "A column holding two values", "A table having no index"], "e_ru": "Она привязывает ребёнка к существующему родителю.", "e_ro": "Ea leagă copilul de un părinte care există."}, {"d": 1, "obj": "1.4", "q": "A column in teachers points at teacher_id of the same table. What is this called?", "a": ["A self-referencing foreign key", "A composite key", "A circular reference", "An alternate key"], "e_ru": "Самоссылающийся ключ строит иерархию внутри одной таблицы.", "e_ro": "Cheia care se referă la ea însăși construiește o ierarhie în interiorul unui singur tabel."}, {"d": 1, "obj": "1.4", "q": "Entity-relationship diagrams are a way to do what with relationships?", "a": ["Visualize them", "Enforce them", "Index them", "Normalize them"], "e_ru": "Схема только показывает замысел. Запрещает нарушение лишь объявленный внешний ключ.", "e_ro": "Schema doar arată ideea. Doar cheia externă declarată interzice încălcarea."}, {"d": 1, "obj": "1.5", "q": "A field holds the value 'Ion, Maria'. Which normal form is broken?", "a": ["First", "Second", "Third", "None"], "e_ru": "Первая нормальная форма: одно значение в одном поле.", "e_ro": "Prima formă normală: o valoare într-un câmp."}, {"d": 1, "obj": "1.5", "q": "In which order are the normal forms applied?", "a": ["1NF, then 2NF, then 3NF", "3NF, then 2NF, then 1NF", "2NF, then 1NF, then 3NF", "The order does not matter"], "e_ru": "Строго по порядку. Каждая форма считает, что предыдущая уже соблюдена.", "e_ro": "Strict în ordine. Fiecare formă presupune că cea dinainte este deja respectată."}, {"d": 1, "obj": "1.5", "q": "Second normal form can only be broken when the table has what?", "a": ["A composite primary key", "A foreign key", "An index", "A NULL column"], "e_ru": "При ключе из одного столбца нет части ключа, от которой можно зависеть.", "e_ro": "La o cheie dintr-o singură coloană nu există o parte a cheii de care să depindă ceva."}, {"d": 1, "obj": "1.5", "q": "A non-key column depends on another non-key column. Which normal form is broken?", "a": ["Third", "First", "Second", "None"], "e_ru": "Третья нормальная форма запрещает зависимость между двумя неключевыми столбцами.", "e_ro": "A treia formă normală interzice dependența dintre două coloane care nu sunt chei."}, {"d": 1, "obj": "1.5", "q": "Breaking a normal form on purpose, to make reading faster, is called what?", "a": ["Denormalization", "Optimization", "Indexing", "Partitioning"], "e_ru": "Денормализация делается осознанно и после замеров, а не до них.", "e_ro": "Denormalizarea se face conștient și după măsurători, nu înaintea lor."}, {"d": 1, "obj": "1.6", "q": "Which backup copies only what changed since the last full backup?", "a": ["Differential", "Full", "Partial", "Transaction log"], "e_ru": "Дифференциальная копия считается от последней ПОЛНОЙ копии.", "e_ro": "Copia diferențială se măsoară de la ultima copie COMPLETĂ."}, {"d": 1, "obj": "1.6", "q": "A password must never be stored in readable form. What is stored instead?", "a": ["A hash of it", "An encrypted copy the server can read back", "The first four characters", "Nothing at all"], "e_ru": "Хеш односторонний: пароль из него обратно не достать.", "e_ro": "Hash-ul este într-un singur sens: parola nu poate fi scoasă înapoi din el."}, {"d": 1, "obj": "1.6", "q": "Which command gives a user permission on a table?", "a": ["GRANT", "ALLOW", "PERMIT", "ASSIGN"], "e_ru": "GRANT выдаёт право, REVOKE забирает.", "e_ro": "GRANT dă dreptul, REVOKE îl ia înapoi."}, {"d": 1, "obj": "1.6", "q": "Showing only part of a value, such as the last four digits, is called what?", "a": ["Masking", "Hashing", "Encrypting", "Truncating"], "e_ru": "Маскирование прячет часть значения, оставляя строку читаемой.", "e_ro": "Mascarea ascunde o parte din valoare, lăsând rândul citibil."}, {"d": 2, "obj": "2.1", "q": "Which three things does CREATE TABLE always need?", "a": ["The table name, the column names, the data types", "The table name, the primary key, the indexes", "The database name, the table name, the columns", "The column names, the data types, the constraints"], "e_ru": "Имя, столбцы, типы. Всё остальное по желанию.", "e_ro": "Numele, coloanele, tipurile. Tot restul este opțional."}, {"d": 2, "obj": "2.1", "q": "How many alterations can one ALTER TABLE statement make?", "a": ["One", "Two", "Three", "Any number"], "e_ru": "Одно изменение на одну команду.", "e_ro": "O singură modificare per comandă."}, {"d": 2, "obj": "2.1", "q": "Which command removes the rows but keeps the table?", "a": ["TRUNCATE TABLE", "DROP TABLE", "DELETE TABLE", "REMOVE TABLE"], "e_ru": "TRUNCATE опустошает таблицу. DROP убирает саму таблицу.", "e_ro": "TRUNCATE golește tabelul. DROP scoate chiar tabelul."}, {"d": 2, "obj": "2.1", "q": "After DROP TABLE, what is left?", "a": ["Nothing — structure and data are gone", "The empty structure", "The data without the structure", "The indexes only"], "e_ru": "DROP убирает объект целиком.", "e_ro": "DROP scoate obiectul complet."}, {"d": 2, "obj": "2.2", "q": "What is a view?", "a": ["A saved query", "A copy of a table", "A backup file", "An index on a column"], "e_ru": "Представление хранит запрос, а не данные.", "e_ro": "View-ul păstrează interogarea, nu datele."}, {"d": 2, "obj": "2.2", "q": "What happens to the underlying table when a view is dropped?", "a": ["Nothing", "It is dropped too", "It is emptied", "It loses its indexes"], "e_ru": "Представление — это только сохранённый запрос.", "e_ro": "View-ul este doar o interogare salvată."}, {"d": 2, "obj": "2.2", "q": "Why grant access to a view instead of the table?", "a": ["The user sees only the columns the view selects", "Views are faster than tables", "Views cannot be dropped", "Views do not need permissions"], "e_ru": "Именно эту идею защиты и спрашивает экзамен.", "e_ro": "Tocmai această idee de protecție o întreabă examenul."}, {"d": 2, "obj": "2.3", "q": "In a stored procedure, an input parameter is used as what?", "a": ["A filter", "A result", "A data type", "A constraint"], "e_ru": "Входной параметр отбирает, с чем работает процедура.", "e_ro": "Parametrul de intrare alege cu ce lucrează procedura."}, {"d": 2, "obj": "2.3", "q": "What does an output parameter of a stored procedure determine?", "a": ["The format in which output is sent to an application", "The number of rows returned", "The order of the result", "Which table is used"], "e_ru": "Это дословная формулировка экзамена.", "e_ro": "Aceasta este formularea exactă a examenului."}, {"d": 2, "obj": "2.3", "q": "How is the result of a query inside a stored procedure made visible?", "a": ["With RETURN", "With PRINT", "With SELECT alone", "With OUTPUT"], "e_ru": "Без RETURN запрос выполняется, а его результат отбрасывается.", "e_ro": "Fără RETURN interogarea rulează, iar rezultatul ei este aruncat."}, {"d": 2, "obj": "2.3", "q": "How does a function differ from a stored procedure?", "a": ["It always returns a value", "It cannot take parameters", "It cannot read tables", "It runs faster"], "e_ru": "Функция возвращает значение и используется внутри запроса.", "e_ro": "Funcția întoarce o valoare și se folosește în interiorul interogării."}, {"d": 2, "obj": "2.4", "q": "Which command builds a non-clustered index?", "a": ["CREATE INDEX", "ALTER INDEX", "BUILD INDEX", "SET INDEX"], "e_ru": "CREATE INDEX. Кластерный создаётся вместе с первичным ключом.", "e_ro": "CREATE INDEX. Cel clustered se creează odată cu cheia primară."}, {"d": 2, "obj": "2.4", "q": "What do you pay for every extra index?", "a": ["Size on disk and slower writes", "Nothing", "Slower reads", "A second table"], "e_ru": "Индексы ускоряют чтение и добавляют размер. Это дословная формулировка объектива 2.4.1.", "e_ro": "Indexurile accelerează citirea și adaugă mărime. Este formularea exactă a obiectivului 2.4.1."}, {"d": 3, "obj": "3.1", "q": "Which join returns only the rows that match on both sides?", "a": ["INNER JOIN", "LEFT JOIN", "FULL OUTER JOIN", "CROSS JOIN"], "e_ru": "INNER JOIN оставляет строку только тогда, когда пара нашлась.", "e_ro": "INNER JOIN lasă rândul doar atunci când perechea a fost găsită."}, {"d": 3, "obj": "3.1", "q": "Every customer must appear, with orders where they exist. Which join?", "a": ["LEFT JOIN", "INNER JOIN", "RIGHT JOIN", "CROSS JOIN"], "e_ru": "LEFT JOIN сохраняет каждую строку первой таблицы.", "e_ro": "LEFT JOIN păstrează fiecare rând al primului tabel."}, {"d": 3, "obj": "3.1", "q": "Which join keeps unmatched rows from BOTH tables?", "a": ["FULL OUTER JOIN", "INNER JOIN", "LEFT JOIN", "CROSS JOIN"], "e_ru": "FULL OUTER JOIN. Там, где его нет, тот же результат собирают через UNION.", "e_ro": "FULL OUTER JOIN. Acolo unde el lipsește, același rezultat se face prin UNION."}, {"d": 3, "obj": "3.1", "q": "A join with no condition, pairing every row with every row, is called what?", "a": ["CROSS JOIN", "FULL JOIN", "NATURAL JOIN", "OUTER JOIN"], "e_ru": "CROSS JOIN возвращает все возможные пары строк.", "e_ro": "CROSS JOIN întoarce toate perechile posibile de rânduri."}, {"d": 3, "obj": "3.1", "q": "A table joined to itself is called what?", "a": ["A self join", "An inner join", "A cross join", "A natural join"], "e_ru": "Самосоединение. Одной и той же таблице дают два псевдонима.", "e_ro": "Auto-îmbinare. Aceluiași tabel i se dau două alias-uri."}, {"d": 3, "obj": "3.1", "q": "Which clause names the columns that two tables are matched on?", "a": ["ON", "WHERE", "USING ONLY", "MATCH"], "e_ru": "ON несёт условие соединения. WHERE фильтрует то, что соединение уже дало.", "e_ro": "ON poartă condiția de îmbinare. WHERE filtrează ceea ce îmbinarea a dat deja."}, {"d": 3, "obj": "3.1", "q": "Which operator stacks two result sets and removes duplicates?", "a": ["UNION", "UNION ALL", "JOIN", "INTERSECT"], "e_ru": "UNION убирает повторы. UNION ALL их оставляет.", "e_ro": "UNION scoate duplicatele. UNION ALL le lasă."}, {"d": 3, "obj": "3.1", "q": "Which operator returns only rows present in both result sets?", "a": ["INTERSECT", "UNION", "EXCEPT", "JOIN"], "e_ru": "INTERSECT — пересечение. EXCEPT — то, что есть в первом и нет во втором.", "e_ro": "INTERSECT — intersecția. EXCEPT — ce este în primul și nu este în al doilea."}, {"d": 3, "obj": "3.1", "q": "What must match for UNION to work?", "a": ["The number of columns and their types", "The table names", "The column names", "The number of rows"], "e_ru": "Одинаковое число столбцов и совместимые типы. Заголовки берутся от первого запроса.", "e_ro": "Același număr de coloane și tipuri compatibile. Titlurile se iau de la prima interogare."}, {"d": 3, "obj": "3.1", "q": "Which keyword removes duplicate rows from one result set?", "a": ["DISTINCT", "UNIQUE", "SINGLE", "ONLY"], "e_ru": "DISTINCT смотрит на строку результата целиком.", "e_ro": "DISTINCT se uită la rândul întreg al rezultatului."}, {"d": 3, "obj": "3.1", "q": "Which keyword gives a column a different name in the result?", "a": ["AS", "IS", "LIKE", "SET"], "e_ru": "AS создаёт псевдоним. Он меняет заголовок, но не таблицу.", "e_ro": "AS creează un alias. El schimbă titlul, dar nu tabelul."}, {"d": 3, "obj": "3.1", "q": "A column appears in the result but not in the table. What is it?", "a": ["A computed column", "A foreign key", "An index", "A view"], "e_ru": "Он считается во время запроса и нигде не хранится.", "e_ro": "Ea se calculează în timpul interogării și nu se păstrează nicăieri."}, {"d": 3, "obj": "3.1", "q": "Which function joins two strings into one?", "a": ["CONCAT", "MERGE", "APPEND", "COMBINE"], "e_ru": "CONCAT. SQL Server понимает и знак плюс.", "e_ro": "CONCAT. SQL Server înțelege și semnul plus."}, {"d": 3, "obj": "3.2", "q": "Which clause puts the result in order?", "a": ["ORDER BY", "GROUP BY", "SORT BY", "ARRANGE BY"], "e_ru": "ORDER BY, и это последняя строка запроса.", "e_ro": "ORDER BY, și acesta este ultimul rând al interogării."}, {"d": 3, "obj": "3.2", "q": "Which keyword sorts from largest to smallest?", "a": ["DESC", "DOWN", "REVERSE", "HIGH"], "e_ru": "DESC. ASC стоит по умолчанию, его можно не писать.", "e_ro": "DESC. ASC este implicit, poate fi omis."}, {"d": 3, "obj": "3.2", "q": "Which clause decides which rows are kept?", "a": ["WHERE", "HAVING", "ORDER BY", "SELECT"], "e_ru": "WHERE отбирает строки до группировки.", "e_ro": "WHERE alege rândurile înainte de grupare."}, {"d": 3, "obj": "3.2", "q": "Which operator matches a pattern inside text?", "a": ["LIKE", "IN", "BETWEEN", "IS"], "e_ru": "LIKE со знаками % и _.", "e_ro": "LIKE cu semnele % și _."}, {"d": 3, "obj": "3.2", "q": "In a LIKE pattern, what does the underscore stand for?", "a": ["Exactly one character", "Any number of characters", "A space", "The end of the value"], "e_ru": "Подчёркивание — ровно один символ, процент — сколько угодно, включая ноль.", "e_ro": "Liniuța de subliniere — exact un caracter, procentul — oricâte, inclusiv niciunul."}, {"d": 3, "obj": "3.2", "q": "A filter uses BETWEEN 900 AND 1300. Is 1300 included?", "a": ["Yes, both boundaries are included", "No, neither is included", "Only the lower one", "It depends on the server"], "e_ru": "BETWEEN включает обе границы.", "e_ro": "BETWEEN include ambele limite."}, {"d": 3, "obj": "3.2", "q": "Which operator tests a value against a list?", "a": ["IN", "LIKE", "BETWEEN", "ANY"], "e_ru": "IN. Это короткая запись цепочки сравнений через OR.", "e_ro": "IN. Este scrierea scurtă a unui lanț de comparații cu OR."}, {"d": 3, "obj": "3.2", "q": "Which keyword reverses a condition?", "a": ["NOT", "NO", "INVERT", "EXCEPT"], "e_ru": "NOT. Пишется перед оператором: NOT LIKE, NOT IN, NOT NULL.", "e_ro": "NOT. Se scrie înaintea operatorului: NOT LIKE, NOT IN, NOT NULL."}, {"d": 3, "obj": "3.2", "q": "In a condition with AND and OR together, what decides the order?", "a": ["Brackets", "The order they are written", "AND always wins", "OR always wins"], "e_ru": "Без скобок AND связывает крепче OR, и результат получается неожиданным.", "e_ro": "Fără paranteze, AND leagă mai tare decât OR, iar rezultatul iese neașteptat."}, {"d": 3, "obj": "3.2", "q": "Which keyword limits the number of rows in SQL Server?", "a": ["TOP", "LIMIT", "FIRST", "MAX"], "e_ru": "TOP в SQL Server, LIMIT в MySQL и PostgreSQL, FETCH FIRST в ANSI SQL.", "e_ro": "TOP în SQL Server, LIMIT în MySQL și PostgreSQL, FETCH FIRST în ANSI SQL."}, {"d": 3, "obj": "3.2", "q": "TOP without ORDER BY returns what?", "a": ["Any rows the server happens to read first", "The largest values", "The newest rows", "An error"], "e_ru": "Без ORDER BY слово «верхние» не значит ничего.", "e_ro": "Fără ORDER BY cuvântul „primele” nu înseamnă nimic."}, {"d": 3, "obj": "3.2", "q": "How do you test that a column holds no value?", "a": ["IS NULL", "= NULL", "== NULL", "EQUALS NULL"], "e_ru": "IS NULL. Сравнение через знак равенства не совпадёт никогда.", "e_ro": "IS NULL. Comparația cu semnul egal nu se potrivește niciodată."}, {"d": 3, "obj": "3.2", "q": "A subquery is compared with ANY. When is the condition true?", "a": ["When it holds for at least one returned value", "When it holds for every returned value", "When the subquery returns nothing", "When the subquery returns one row"], "e_ru": "ANY хватает одного совпадения, ALL требует всех.", "e_ro": "Lui ANY îi ajunge o potrivire, ALL le cere pe toate."}, {"d": 3, "obj": "3.2", "q": "NOT IN is used with a list that contains NULL. What is the result?", "a": ["No rows at all", "All rows", "The rows that do not match", "An error message"], "e_ru": "Сравнение с пустотой никогда не истинно, поэтому отсеивается всё. Любимая ловушка экзамена.", "e_ro": "Comparația cu golul nu este niciodată adevărată, de aceea se elimină tot. Capcana preferată a examenului."}, {"d": 3, "obj": "3.2", "q": "Which operator means 'not equal to' in the exam's ANSI form?", "a": ["<>", "!==", "=/=", "NOT ="], "e_ru": "Знак <> — форма стандарта. SQL Server понимает и !=.", "e_ro": "Semnul <> este forma standardului. SQL Server înțelege și !=."}, {"d": 3, "obj": "3.3", "q": "Which clause collects rows so an aggregate can be applied per group?", "a": ["GROUP BY", "ORDER BY", "PARTITION", "HAVING"], "e_ru": "GROUP BY. Каждый неагрегированный столбец SELECT должен быть и в нём.", "e_ro": "GROUP BY. Fiecare coloană neagregată din SELECT trebuie să fie și în el."}, {"d": 3, "obj": "3.3", "q": "Which clause filters on the result of an aggregate?", "a": ["HAVING", "WHERE", "FILTER", "ORDER BY"], "e_ru": "HAVING. Агрегат нельзя написать в WHERE.", "e_ro": "HAVING. Un agregat nu poate fi scris în WHERE."}, {"d": 3, "obj": "3.3", "q": "Which form of COUNT skips rows where the column is empty?", "a": ["COUNT(column)", "COUNT(*)", "COUNT(1)", "COUNT(ALL)"], "e_ru": "COUNT(столбца) пропускает пустые значения. COUNT(*) считает строки.", "e_ro": "COUNT(coloană) sare peste valorile goale. COUNT(*) numără rândurile."}, {"d": 3, "obj": "3.3", "q": "Which function returns the smallest value in a column?", "a": ["MIN", "LOW", "FIRST", "BOTTOM"], "e_ru": "MIN, а для наибольшего — MAX.", "e_ro": "MIN, iar pentru cea mai mare — MAX."}, {"d": 3, "obj": "3.3", "q": "Which function adds the values of a column together?", "a": ["SUM", "TOTAL", "ADD", "PLUS"], "e_ru": "SUM. Как и все агрегаты кроме COUNT(*), он пропускает пустые значения.", "e_ro": "SUM. Ca toate agregatele în afară de COUNT(*), el sare peste valorile goale."}, {"d": 3, "obj": "3.3", "q": "AVG is used on a column where some rows are NULL. What happens?", "a": ["Those rows are ignored", "They count as zero", "The result is NULL", "The query fails"], "e_ru": "Агрегаты пропускают пустые значения. Поэтому AVG и деление SUM на COUNT могут не совпасть.", "e_ro": "Agregatele sar peste valorile goale. De aceea AVG și împărțirea SUM la COUNT pot să nu coincidă."}, {"d": 4, "obj": "4.1", "q": "Which statement copies records from one table into another?", "a": ["INSERT INTO … SELECT", "COPY TABLE", "SELECT INTO VALUES", "MERGE ROWS"], "e_ru": "INSERT INTO … SELECT. Слова VALUES в этой форме нет.", "e_ro": "INSERT INTO … SELECT. Cuvântul VALUES nu există în această formă."}, {"d": 4, "obj": "4.1", "q": "A column list is left out of an INSERT. What must you supply?", "a": ["Every column, in table order", "Only the required columns", "Only the primary key", "Nothing — defaults are used"], "e_ru": "Без списка столбцов один добавленный столбец ломает команду.", "e_ro": "Fără lista coloanelor, o singură coloană adăugată strică comanda."}, {"d": 4, "obj": "4.2", "q": "An UPDATE statement is written without a WHERE clause. What happens?", "a": ["Every row in the table changes", "Nothing changes", "The server asks for confirmation", "Only the first row changes"], "e_ru": "Изменятся все строки, без предупреждения и без возможности отменить.", "e_ro": "Se vor schimba toate rândurile, fără avertisment și fără posibilitatea de anulare."}, {"d": 4, "obj": "4.3", "q": "Which statement removes some rows and can be limited by a condition?", "a": ["DELETE", "TRUNCATE", "DROP", "REMOVE"], "e_ru": "DELETE принимает условие WHERE. TRUNCATE убирает все строки сразу.", "e_ro": "DELETE acceptă condiția WHERE. TRUNCATE scoate toate rândurile deodată."}, {"d": 4, "obj": "4.3", "q": "Which of these is part of DML rather than DDL?", "a": ["DELETE", "TRUNCATE", "DROP", "ALTER"], "e_ru": "DELETE работает с данными. Остальные три меняют структуру.", "e_ro": "DELETE lucrează cu datele. Celelalte trei schimbă structura."}, {"d": 5, "obj": "5.1", "q": "A CREATE TABLE statement is missing a closing bracket. What kind of error?", "a": ["A syntax error", "A runtime error", "A logic error", "A permission error"], "e_ru": "Команду невозможно даже прочитать, поэтому она не выполняется вовсе.", "e_ro": "Comanda nici nu poate fi citită, de aceea nu se execută deloc."}, {"d": 5, "obj": "5.1", "q": "Creating a table with a name that already exists produces what?", "a": ["A runtime error", "A syntax error", "A warning only", "A second table"], "e_ru": "Команда написана верно, и база отказывает по данным.", "e_ro": "Comanda este scrisă corect, iar baza refuză din cauza datelor."}, {"d": 5, "obj": "5.2", "q": "A query runs without an error but returns 8 rows instead of 10. What is it?", "a": ["A logic error", "A syntax error", "A permission error", "A connection error"], "e_ru": "Команда верна, значит это не синтаксис. Неверен замысел.", "e_ro": "Comanda este corectă, deci nu este sintaxă. Ideea este greșită."}, {"d": 5, "obj": "5.2", "q": "A query fails with a missing keyword. Which keyword is missing most often?", "a": ["VALUES", "SELECT", "TABLE", "WHERE"], "e_ru": "Без VALUES сервер не отличит список столбцов от списка данных.", "e_ro": "Fără VALUES serverul nu deosebește lista coloanelor de lista datelor."}, {"d": 5, "obj": "5.3", "q": "Inserting a value that already exists in the primary key produces what?", "a": ["A runtime error", "A syntax error", "A warning only", "A silent skip"], "e_ru": "Синтаксис безупречен, и всё равно данные говорят нет.", "e_ro": "Sintaxa este impecabilă, și totuși datele spun nu."}, {"d": 5, "obj": "5.3", "q": "What is the difference between a syntax error and a runtime error?", "a": ["Syntax never runs; runtime runs and the data refuses", "Syntax is on the server; runtime is on the client", "Syntax stops the database; runtime stops the query", "There is no difference"], "e_ru": "Каждый вопрос этой темы на самом деле спрашивает, какая из двух ошибок перед вами.", "e_ro": "Fiecare întrebare din această temă întreabă de fapt care dintre cele două greșeli este în fața voastră."}];
+const TESTS = [{"key": "d1", "ru": "Domain 1: Database Design", "ro": "Domain 1: Database Design", "domain": 1, "count": 29, "minutes": 60}, {"key": "d2", "ru": "Domain 2: Database Object Management", "ro": "Domain 2: Database Object Management", "domain": 2, "count": 13, "minutes": 30}, {"key": "d3", "ru": "Domain 3: Data Retrieval", "ro": "Domain 3: Data Retrieval", "domain": 3, "count": 34, "minutes": 70}, {"key": "d4", "ru": "Domain 4: Data Manipulation", "ro": "Domain 4: Data Manipulation", "domain": 4, "count": 5, "minutes": 10}, {"key": "d5", "ru": "Domain 5: Troubleshooting", "ro": "Domain 5: Troubleshooting", "domain": 5, "count": 6, "minutes": 12}, {"key": "full", "ru": "Full practice exam", "ro": "Full practice exam", "domain": 0, "count": 34, "minutes": 45}];
+const L = {"title": {"ru": "Пробные экзамены · Certiport IT Specialist: Databases", "ro": "Teste de probă · Certiport IT Specialist: Databases"}, "subtitle": {"ru": "Certiport IT Specialist: Databases · пробные экзамены", "ro": "Certiport IT Specialist: Databases · teste de probă"}, "prev": {"ru": "← Назад", "ro": "← Înapoi"}, "reset": {"ru": "↻ Сбросить ответ", "ro": "↻ Șterge răspunsul"}, "toggle": {"ru": "☰ Все вопросы", "ro": "☰ Toate întrebările"}, "mark": {"ru": "отметить", "ro": "marchează"}, "skip": {"ru": "Пропустить ⏭", "ro": "Omite ⏭"}, "next": {"ru": "Далее →", "ro": "Mai departe →"}, "finishbtn": {"ru": "Завершить ✓", "ro": "Finalizează ✓"}, "navtitle": {"ru": "Навигация по вопросам", "ro": "Navigare prin întrebări"}, "legend": {"ru": "Синий — отвечено · жёлтый — отмечено для возврата · рамка — текущий.", "ro": "Albastru — răspuns dat · galben — marcat pentru revenire · chenar — întrebarea curentă."}, "nojs_h": {"ru": "Тест не запустился.", "ro": "Testul nu a pornit."}, "nojs_p": {"ru": "Эта страница работает только в браузере. Если вы открыли файл просмотром из почты, мессенджера или пробелом в Finder — сохраните его на диск и откройте <b>двойным щелчком</b>, либо перетащите в окно Chrome, Safari или Edge.", "ro": "Această pagină funcționează doar în browser. Dacă ați deschis fișierul cu previzualizarea din e-mail, din messenger sau cu bara de spațiu în Finder — salvați-l pe disc și deschideți-l cu <b>dublu clic</b>, ori trageți-l în fereastra Chrome, Safari sau Edge."}, "pick_h": {"ru": "Пробные экзамены", "ro": "Teste de probă"}, "pick_p": {"ru": "Выберите тест. Отсчёт времени начнётся сразу после нажатия.", "ro": "Alegeți testul. Cronometrul pornește imediat după apăsare."}, "q_short": {"ru": "вопр.", "ro": "întreb."}, "min_short": {"ru": "мин", "ro": "min"}, "pick_note": {"ru": "Объёмы тестов взяты из практического теста. Проходной балл везде 700 из 1000. Вопросы и варианты перемешиваются при каждом запуске, поэтому один и тот же тест можно проходить много раз.", "ro": "Mărimea testelor este luată din testul practic. Pragul de trecere este peste tot 700 din 1000. Întrebările și variantele se amestecă la fiecare pornire, de aceea același test poate fi parcurs de multe ori."}, "choose_one": {"ru": "Выберите один вариант.", "ro": "Alegeți o singură variantă."}, "obj": {"ru": "objective", "ro": "objective"}, "fin_h": {"ru": "Завершить тест?", "ro": "Finalizați testul?"}, "fin_p": {"ru": "После этого ответы уже не изменить — откроется результат и разбор.", "ro": "După aceasta răspunsurile nu mai pot fi schimbate — se va deschide rezultatul și analiza."}, "answered": {"ru": "Отвечено", "ro": "Răspuns dat"}, "of": {"ru": "из", "ro": "din"}, "unanswered": {"ru": "Без ответа", "ro": "Fără răspuns"}, "marked": {"ru": "Отмечено для возврата", "ro": "Marcate pentru revenire"}, "fin_yes": {"ru": "Да, завершить", "ro": "Da, finalizează"}, "fin_no": {"ru": "Вернуться к вопросам", "ro": "Înapoi la întrebări"}, "correct_n": {"ru": "верно", "ro": "corecte"}, "passmark": {"ru": "проходной балл 700", "ro": "pragul de trecere 700"}, "passed": {"ru": "сдано", "ro": "promovat"}, "failed": {"ru": "не сдано", "ro": "nepromovat"}, "outof1000": {"ru": "из 1000", "ro": "din 1000"}, "th_topic": {"ru": "Domain", "ro": "Domain"}, "th_right": {"ru": "Верно", "ro": "Corecte"}, "th_total": {"ru": "Всего", "ro": "Total"}, "th_share": {"ru": "Доля", "ro": "Procent"}, "review": {"ru": "Разбор", "ro": "Analiza"}, "right_is": {"ru": "Верно:", "ro": "Corect:"}, "your_is": {"ru": "Ваш ответ:", "ro": "Răspunsul vostru:"}, "skipped": {"ru": "— пропущен —", "ro": "— omisă —"}, "back": {"ru": "К списку тестов", "ro": "La lista testelor"}, "lang_h": {"ru": "Выберите язык", "ro": "Alegeți limba"}, "lang_p": {"ru": "Вопросы и варианты ответа всегда на английском — на экзамене они именно такие. Выбранный язык меняет подписи кнопок, объяснения и разбор.", "ro": "Întrebările și variantele de răspuns sunt mereu în engleză — la examen ele sunt exact așa. Limba aleasă schimbă textul butoanelor, explicațiile și analiza."}, "name_label": {"ru": "Имя и фамилия", "ro": "Numele și prenumele"}, "name_ph": {"ru": "как в журнале", "ro": "ca în catalog"}, "name_need": {"ru": "Впишите имя — оно попадёт в файл с результатом.", "ro": "Scrieți numele — el va ajunge în fișierul cu rezultatul."}, "dl": {"ru": "⬇ Скачать результат", "ro": "⬇ Descărcați rezultatul"}, "print": {"ru": "🖨 Распечатать", "ro": "🖨 Tipăriți"}, "rep_title": {"ru": "Результат пробного экзамена", "ro": "Rezultatul testului de probă"}, "rep_name": {"ru": "Ученик", "ro": "Elev"}, "rep_test": {"ru": "Тест", "ro": "Testul"}, "rep_date": {"ru": "Дата", "ro": "Data"}, "rep_spent": {"ru": "Затрачено, мин:сек", "ro": "Timp folosit, min:sec"}, "rep_score": {"ru": "Балл", "ro": "Punctaj"}, "rep_review": {"ru": "Разбор ответов", "ro": "Analiza răspunsurilor"}, "rep_foot": {"ru": "Файл создан самим тестом. Вопросы собственные, задания практического теста не копируются.", "ro": "Fișierul este creat de test. Întrebările sunt proprii, sarcinile testului practic nu sunt copiate."}, "noname": {"ru": "без имени", "ro": "fără nume"}};
+const TOP = {"1": {"ru": "Domain 1: Database Design", "ro": "Domain 1: Database Design"}, "2": {"ru": "Domain 2: Database Object Management", "ro": "Domain 2: Database Object Management"}, "3": {"ru": "Domain 3: Data Retrieval", "ro": "Domain 3: Data Retrieval"}, "4": {"ru": "Domain 4: Data Manipulation", "ro": "Domain 4: Data Manipulation"}, "5": {"ru": "Domain 5: Troubleshooting", "ro": "Domain 5: Troubleshooting"}};
+
+let lang = 'ru';
+let who = '';
+let started = null;          // когда начали — нужно для времени в отчёте
+try { who = localStorage.getItem('mock_who') || ''; } catch(e) {}
+function save(){ try { localStorage.setItem('mock_who', who); } catch(e) {} }
+function esc(s){ return String(s).replace(/[&<>"]/g, c => (
+  {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+let QS = [], cur = 0, ans = [], marks = [], order = [];
+let left = 0, done = false, tick = null, test = null;
+
+const $ = id => document.getElementById(id);
+const T = k => (L[k] || {})[lang] || '';
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function fmt(s){const m=Math.floor(s/60);return (m>=60? Math.floor(m/60)+':'+String(m%60).padStart(2,'0') : m)+':'+String(s%60).padStart(2,'0');}
+
+function chrome(on){
+  $('bar').style.display = on ? '' : 'none';
+  $('pbar').style.display = on ? '' : 'none';
+  if (!on) $('nav').classList.remove('on');
+}
+
+/* ---------- язык ---------- */
+function applyLang(l){
+  lang = l;
+  document.documentElement.lang = l;
+  document.title = T('title');
+  $('sub').textContent = T('subtitle');
+  $('lru').classList.toggle('on', l === 'ru');
+  $('lro').classList.toggle('on', l === 'ro');
+  $('prev').textContent   = T('prev');
+  $('reset').textContent  = T('reset');
+  $('toggle').textContent = T('toggle');
+  $('skip').textContent   = T('skip');
+  $('marklabel').textContent = ' ' + T('mark');
+  $('navtitle').textContent = T('navtitle');
+  $('navlegend').textContent = T('legend');
+  try { localStorage.setItem('mock_lang', l); } catch(e) {}
+  if (test && !done) renderQ(); else if (!done) menu();
+}
+
+/* первый экран: выбор языка */
+function langScreen(){
+  chrome(false);
+  $('card').innerHTML =
+    '<p class="qtext">Выберите язык · Alegeți limba</p>' +
+    '<p class="qhint">Вопросы и варианты ответа всегда на английском, как на экзамене.<br>' +
+    'Întrebările și variantele sunt mereu în engleză, ca la examen.</p><hr>' +
+    '<div class="opts">' +
+    '<button class="opt big" id="pru">Русский</button>' +
+    '<button class="opt big" id="pro">Română</button></div>';
+  $('pru').onclick = () => { applyLang('ru'); menu(); };
+  $('pro').onclick = () => { applyLang('ro'); menu(); };
+}
+
+/* ---------- выбор теста ---------- */
+function menu(){
+  clearInterval(tick); done = false; test = null; chrome(false);
+  let h = '<p class="qtext">' + T('pick_h') + '</p>'
+        + '<p class="qhint">' + T('pick_p') + '</p><hr>'
+        + '<div class="who"><label for="who">' + T('name_label') + '</label>'
+        + '<input id="who" type="text" autocomplete="name" placeholder="' + T('name_ph')
+        + '" value="' + esc(who) + '">'
+        + '<span class="warn" id="warn" hidden>' + T('name_need') + '</span></div>';
+  TESTS.forEach(t => {
+    h += '<button class="opt pick" data-k="' + t.key + '">'
+       + '<b>' + t[lang] + '</b>'
+       + '<span class="meta">' + t.count + ' ' + T('q_short') + ' · '
+       + t.minutes + ' ' + T('min_short') + '</span></button>';
+  });
+  h += '<div class="note">' + T('pick_note') + '</div>';
+  $('card').innerHTML = h;
+  $('who').oninput = e => { who = e.target.value; save(); $('warn').hidden = true; };
+  $('card').querySelectorAll('.pick').forEach(b => b.onclick = () => {
+    if (!who.trim()) { $('warn').hidden = false; $('who').focus(); return; }
+    begin(b.dataset.k);
+  });
+}
+
+/* ---------- запуск ---------- */
+function begin(key){
+  test = TESTS.find(t => t.key === key);
+  let pool = test.domain ? BANK.filter(q => q.d === test.domain) : null;
+  if (pool) {
+    QS = shuffle(pool.slice()).slice(0, test.count);
+  } else {
+    const share = {1: 9, 2: 4, 3: 17, 4: 2, 5: 2};
+    QS = [];
+    Object.keys(share).forEach(d => {
+      QS = QS.concat(shuffle(BANK.filter(q => q.d === +d)).slice(0, share[d]));
+    });
+    shuffle(QS);
+  }
+  cur = 0;
+  ans = Array(QS.length).fill(null);
+  marks = Array(QS.length).fill(false);
+  order = QS.map(q => shuffle(q.a.map((_, i) => i)));
+  left = test.minutes * 60;
+  started = new Date();
+  done = false;
+  chrome(true);
+  $('timer').classList.remove('low');
+  $('timer').textContent = fmt(left);
+  clearInterval(tick);
+  tick = setInterval(() => {
+    left--;
+    $('timer').textContent = fmt(Math.max(left, 0));
+    if (left <= 300) $('timer').classList.add('low');
+    if (left <= 0) finish();
+  }, 1000);
+  renderQ();
+}
+
+/* ---------- вопрос ---------- */
+function renderQ(){
+  const q = QS[cur];
+  $('count').textContent = (cur + 1) + ' / ' + QS.length;
+  $('obj').textContent = TOP[q.d][lang] + ' · ' + T('obj') + ' ' + q.obj;
+  $('mark').checked = marks[cur];
+  $('prev').disabled = cur === 0;
+  $('next').textContent = cur === QS.length - 1 ? T('finishbtn') : T('next');
+  $('skip').disabled = cur === QS.length - 1;
+  let h = '<p class="qtext">' + q.q + '</p>';
+  h += '<p class="qhint">' + T('choose_one') + '</p><hr><div class="opts">';
+  order[cur].forEach(oi => {
+    h += '<button class="opt' + (ans[cur] === oi ? ' sel' : '') + '" data-o="' + oi + '">'
+       + q.a[oi] + '</button>';
+  });
+  h += '</div>';
+  $('card').innerHTML = h;
+  $('card').querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    ans[cur] = +b.dataset.o; renderQ();
+  });
+  renderGrid();
+  $('pfill').style.width = Math.round(ans.filter(a => a !== null).length / QS.length * 100) + '%';
+}
+
+function renderGrid(){
+  let h = '';
+  for (let i = 0; i < QS.length; i++){
+    h += '<button class="g' + (ans[i] !== null ? ' done' : '') + (marks[i] ? ' mark' : '')
+       + (i === cur ? ' cur' : '') + '" data-i="' + i + '">' + (i + 1) + '</button>';
+  }
+  $('grid').innerHTML = h;
+  $('grid').querySelectorAll('.g').forEach(b => b.onclick = () => { cur = +b.dataset.i; renderQ(); });
+}
+
+/* ---------- завершение ---------- */
+function askFinish(){
+  const miss = ans.filter(a => a === null).length;
+  const marked = marks.filter(Boolean).length;
+  let h = '<p class="qtext">' + T('fin_h') + '</p>'
+        + '<p class="qhint">' + T('fin_p') + '</p><hr>'
+        + '<table style="margin:0 0 22px"><tr><th>' + T('answered') + '</th><td>'
+        + (QS.length - miss) + ' ' + T('of') + ' ' + QS.length + '</td></tr>';
+  if (miss)   h += '<tr><th>' + T('unanswered') + '</th><td style="color:#A3002C"><b>' + miss + '</b></td></tr>';
+  if (marked) h += '<tr><th>' + T('marked') + '</th><td>' + marked + '</td></tr>';
+  h += '</table><div class="opts"><button class="opt sel" id="yes">' + T('fin_yes') + '</button>'
+     + '<button class="opt" id="no">' + T('fin_no') + '</button></div>';
+  $('card').innerHTML = h;
+  $('yes').onclick = finish;
+  $('no').onclick = renderQ;
+}
+
+function finish(){
+  done = true; clearInterval(tick);
+  const per = {}; let right = 0;
+  QS.forEach((q, i) => {
+    per[q.d] = per[q.d] || [0, 0];
+    per[q.d][1]++;
+    if (ans[i] === 0){ right++; per[q.d][0]++; }
+  });
+  const scaled = Math.round(right / QS.length * 1000);
+  const ok = scaled >= 700;
+  let h = '<div class="res"><h2>' + test[lang] + '</h2>'
+        + '<div class="score ' + (ok ? 'pass' : 'fail') + '">' + scaled
+        + ' <span style="font-size:20px;font-weight:600">' + T('outof1000') + '</span></div>'
+        + '<p>' + right + ' ' + T('of') + ' ' + QS.length + ' ' + T('correct_n') + ' · '
+        + T('passmark') + ' · <b>' + (ok ? T('passed') : T('failed')) + '</b></p>';
+  if (Object.keys(per).length > 1){
+    h += '<table><tr><th>' + T('th_topic') + '</th><th>' + T('th_right') + '</th><th>'
+       + T('th_total') + '</th><th>' + T('th_share') + '</th></tr>';
+    Object.keys(per).sort().forEach(d => {
+      const [a, b] = per[d];
+      h += '<tr><td>' + TOP[d][lang] + '</td><td>' + a + '</td><td>' + b
+         + '</td><td>' + Math.round(a / b * 100) + '%</td></tr>';
+    });
+    h += '</table>';
+  }
+  h += '<h2 style="margin-top:26px;font-size:20px">' + T('review') + '</h2>';
+  QS.forEach((q, i) => {
+    h += '<div class="rev"><div class="q"><span class="tag">' + (i + 1) + ' · ' + q.obj
+       + '</span>' + q.q + '</div>'
+       + '<div class="a">' + T('right_is') + ' <b style="color:#166C3E">' + q.a[0] + '</b></div>';
+    if (ans[i] !== 0)
+      h += '<div class="a">' + T('your_is') + ' <b style="color:#A3002C">'
+         + (ans[i] === null ? T('skipped') : q.a[ans[i]]) + '</b></div>';
+    h += '<div class="e">' + (lang === 'ro' ? q.e_ro : q.e_ru) + '</div></div>';
+  });
+  h += '<div class="acts">'
+     + '<button class="p" id="dl">' + T('dl') + '</button>'
+     + '<button id="pr">' + T('print') + '</button>'
+     + '<button id="again">' + T('back') + '</button></div></div>';
+  chrome(false);
+  $('card').innerHTML = h;
+  $('again').onclick = menu;
+  $('pr').onclick = () => window.print();
+  $('dl').onclick = () => download(report(scaled, right, ok, per));
+}
+
+/* ---------- файл с результатом ---------- */
+function spent(){
+  if (!started) return '—';
+  const sec = Math.max(0, Math.round((Date.now() - started.getTime()) / 1000));
+  return fmt(sec);
+}
+
+function report(scaled, right, ok, per){
+  const d = new Date();
+  const dt = d.toLocaleDateString(lang === 'ro' ? 'ro-RO' : 'ru-RU')
+           + ' ' + d.toLocaleTimeString(lang === 'ro' ? 'ro-RO' : 'ru-RU',
+                                        {hour: '2-digit', minute: '2-digit'});
+  let rows = '';
+  if (Object.keys(per).length > 1){
+    rows = '<table><tr><th>' + T('th_topic') + '</th><th>' + T('th_right') + '</th><th>'
+         + T('th_total') + '</th><th>' + T('th_share') + '</th></tr>';
+    Object.keys(per).sort().forEach(k => {
+      const [a, b] = per[k];
+      rows += '<tr><td>' + esc(TOP[k][lang]) + '</td><td>' + a + '</td><td>' + b
+            + '</td><td>' + Math.round(a / b * 100) + '%</td></tr>';
+    });
+    rows += '</table>';
+  }
+  let rev = '';
+  QS.forEach((q, i) => {
+    const good = ans[i] === 0;
+    rev += '<div class="rev"><div class="q"><span class="tag">' + (i + 1) + ' · ' + esc(q.obj)
+         + '</span>' + esc(q.q) + '</div>'
+         + '<div class="a">' + T('right_is') + ' <b class="ok">' + esc(q.a[0]) + '</b></div>';
+    if (!good)
+      rev += '<div class="a">' + T('your_is') + ' <b class="no">'
+           + (ans[i] === null ? T('skipped') : esc(q.a[ans[i]])) + '</b></div>';
+    rev += '<div class="e">' + esc(lang === 'ro' ? q.e_ro : q.e_ru) + '</div></div>';
+  });
+
+  return '<!doctype html><html lang="' + lang + '"><head><meta charset="utf-8">'
+   + '<title>' + T('rep_title') + ' · ' + esc(who || T('noname')) + '</title><style>'
+   + 'body{margin:0;background:#fff;color:#2a2d52;font:14px/1.55 "Segoe UI",system-ui,sans-serif}'
+   + '.p{max-width:900px;margin:0 auto;padding:30px 26px 50px}'
+   + 'h1{font-size:22px;margin:0 0 4px;color:#1927A1}'
+   + '.sub{color:#6B7280;font-size:13px;margin:0 0 20px}'
+   + 'table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13.5px}'
+   + 'th,td{border:1px solid #D8DCF0;padding:8px 11px;text-align:left}'
+   + 'th{background:#F3F5FE;color:#1927A1}'
+   + '.score{font-size:42px;font-weight:800;line-height:1.1;margin:6px 0}'
+   + '.pass{color:#2E9E5B}.fail{color:#E4003D}'
+   + 'h2{font-size:17px;margin:26px 0 6px;color:#22235C}'
+   + '.rev{border-top:1px solid #D8DCF0;padding-top:12px;margin-top:12px}'
+   + '.rev .q{font-weight:600;margin-bottom:5px}'
+   + '.rev .a{font-size:13.5px;margin:2px 0}.ok{color:#166C3E}.no{color:#A3002C}'
+   + '.rev .e{font-size:13px;color:#6B7280;margin-top:4px}'
+   + '.tag{display:inline-block;font-size:11.5px;padding:2px 7px;border-radius:20px;'
+   + 'background:#F3F5FE;color:#1927A1;margin-right:6px;font-weight:700}'
+   + '.foot{margin-top:30px;border-top:1px solid #D8DCF0;padding-top:12px;'
+   + 'color:#6B7280;font-size:12px}'
+   + '@media print{.p{padding:0}.rev{break-inside:avoid}}'
+   + '</style></head><body><div class="p">'
+   + '<h1>NEXUS ACADEMY · ' + T('rep_title') + '</h1>'
+   + '<p class="sub">Certiport IT Specialist: Databases</p>'
+   + '<table>'
+   + '<tr><th>' + T('rep_name')  + '</th><td>' + esc(who || T('noname')) + '</td></tr>'
+   + '<tr><th>' + T('rep_test')  + '</th><td>' + esc(test[lang]) + '</td></tr>'
+   + '<tr><th>' + T('rep_date')  + '</th><td>' + dt + '</td></tr>'
+   + '<tr><th>' + T('rep_spent') + '</th><td>' + spent() + '</td></tr>'
+   + '</table>'
+   + '<h2>' + T('rep_score') + '</h2>'
+   + '<div class="score ' + (ok ? 'pass' : 'fail') + '">' + scaled + ' ' + T('outof1000') + '</div>'
+   + '<p>' + right + ' ' + T('of') + ' ' + QS.length + ' ' + T('correct_n') + ' · '
+   + T('passmark') + ' · <b>' + (ok ? T('passed') : T('failed')) + '</b></p>'
+   + rows
+   + '<h2>' + T('rep_review') + '</h2>' + rev
+   + '<p class="foot">' + T('rep_foot') + '</p>'
+   + '</div></body></html>';
+}
+
+function download(html){
+  const safe = (who || T('noname')).replace(/[^\p{L}\p{N}]+/gu, '_').slice(0, 40);
+  const d = new Date();
+  const stamp = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
+              + '-' + String(d.getDate()).padStart(2, '0');
+  const name = 'Rezultat_' + safe + '_' + test.key + '_' + stamp + '.html';
+  const blob = new Blob(['﻿' + html], {type: 'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+/* ---------- панель ---------- */
+$('prev').onclick  = () => { if (cur > 0){ cur--; renderQ(); } };
+$('next').onclick  = () => { if (cur < QS.length - 1){ cur++; renderQ(); } else askFinish(); };
+$('skip').onclick  = () => { if (cur < QS.length - 1){ cur++; renderQ(); } };
+$('reset').onclick = () => { ans[cur] = null; renderQ(); };
+$('mark').onchange = e => { marks[cur] = e.target.checked; renderGrid(); };
+$('toggle').onclick = () => $('nav').classList.toggle('on');
+$('lru').onclick = () => applyLang('ru');
+$('lro').onclick = () => applyLang('ro');
+document.addEventListener('keydown', e => {
+  if (done || !test) return;
+  if (e.altKey && e.shiftKey && e.key === 'ArrowRight') $('next').click();
+  if (e.altKey && e.shiftKey && e.key === 'ArrowLeft')  $('prev').click();
+});
+
+/* старт: язык спрашиваем первым экраном */
+applyLang('ru');
+langScreen();
+</script></body></html>
